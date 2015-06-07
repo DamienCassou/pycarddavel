@@ -1,9 +1,13 @@
-;;; pycarddavel.el --- Integrate pycarddav in Emacs
+;;; pycarddavel.el --- Integrate pycarddav -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2015 Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
 ;; Version: 0.1
+;; GIT: https://github.com/DamienCassou/pycarddavel
+;; Package-Requires: ((helm "1.7.0") (emacs "24.0"))
+;; Created: 07 Jun 2015
+;; Keywords: helm pyccarddav carddav message mu4e contacts
 
 ;; This file is not part of GNU Emacs.
 
@@ -22,8 +26,10 @@
 
 ;;; Commentary:
 
-;; Integrate pycarddav in Emacs
-
+;; Write carddav contact names and email addresses as a
+;; comma-separated text (call `pycarddavel-search-with-helm` to start
+;; the process).
+;;
 ;;; Code:
 
 
