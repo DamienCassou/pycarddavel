@@ -2,16 +2,12 @@
 
 ## Summary
 
-Integrate pycarddav in Emacs
+Write carddav contact names and email addresses as a comma-separated
+text (call `pycarddavel-search-with-helm` to start the process).
 
 ## Installing
 
-You will need Emacs 24+, `make` and [Cask](https://github.com/cask/cask) to
-build the project.
-
-    cd pycarddavel
-    make && make install
-
+Use [melpa](http://melpa.milkbox.net).
 
 ## Contributing
 
