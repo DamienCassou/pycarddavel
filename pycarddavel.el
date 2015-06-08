@@ -33,7 +33,6 @@
 ;;; Code:
 
 
-(require 'cl-lib)
 (require 'eieio)
 (require 'helm)
 
