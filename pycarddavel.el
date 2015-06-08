@@ -71,11 +71,13 @@ The returned contact is of the form
   "Print selected contacts as comma-separated text.
 CANDIDATE is ignored."
   (ignore candidate)
-  (cl-loop for candidate in (helm-marked-candidates)
-           do (let ((contact (pycarddavel-get-contact-from-line candidate)))
-                (insert (format "\"%s\" <%s>, "
-                                (plist-get contact :name)
-                                (plist-get contact :mail))))))
+  (insert (mapconcat (lambda (contact)
+                       (let ((contact (pycarddavel--get-contact-from-line contact)))
+                         (format "\"%s\" <%s>"
+                                 (plist-get contact :name)
+                                 (plist-get contact :mail))))
+                     (helm-marked-candidates)
+                     ", ")))
 
 (defclass pycarddavel--helm-source (helm-source-in-buffer)
   ((init :initform #'pycarddavel--helm-source-init)
