@@ -37,7 +37,7 @@
 (require 'eieio)
 (require 'helm)
 
-(defun pycarddavel-get-contacts-buffer ()
+(defun pycarddavel--get-contacts-buffer ()
   "Put all pycarddav contacts in the returned buffer."
   (let ((buffer (get-buffer-create "*pycarddavel-contacts*")))
     (with-current-buffer buffer
@@ -52,7 +52,7 @@
       (kill-whole-line 1))
     buffer))
 
-(defun pycarddavel-get-contact-from-line (line)
+(defun pycarddavel--get-contact-from-line (line)
   "Return a carddav contact read from LINE.
 
 The line must start with something like:
@@ -65,7 +65,7 @@ The returned contact is of the form
 
 (defun pycarddavel--helm-source-init ()
   "Initialize helm candidate buffer."
-  (helm-candidate-buffer (pycarddavel-get-contacts-buffer)))
+  (helm-candidate-buffer (pycarddavel--get-contacts-buffer)))
 
 (defun pycarddavel--helm-source-select-action (candidate)
   "Print selected contacts as comma-separated text.
