@@ -84,7 +84,7 @@ CANDIDATE is ignored."
                       "Select" #'pycarddavel--helm-source-select-action))
    (requires-pattern :initform 0)))
 
-;;;#autoload
+;;;###autoload
 (defun pycarddavel-search-with-helm ()
   "Start helm to select your contacts from a list."
   (interactive)
