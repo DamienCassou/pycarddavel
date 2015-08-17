@@ -48,7 +48,7 @@
        nil ;; don't redisplay
        "-m") ;; 1st arg to pc_query: prints email addresses
       (goto-char (point-min))
-      (kill-whole-line 1))
+      (delete-region (point-min) (line-end-position)))
     buffer))
 
 (defun pycarddavel--get-contact-from-line (line)
