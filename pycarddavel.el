@@ -36,20 +36,35 @@
 (require 'eieio)
 (require 'helm)
 
+(defconst pycarddavel--buffer "*pycarddavel-contacts*")
+
+(defun pycarddavel--fill-buffer (buffer)
+  "Make sure BUFFER contain all pycarddav contacts.
+If BUFFER already contains something, erase it before."
+  (with-current-buffer buffer
+    (erase-buffer)
+    (call-process
+     "pc_query"
+     nil                           ; input file
+     (list buffer nil)             ; output to buffer, discard error
+     nil                           ; don't redisplay
+     "-m")                         ; 1st arg to pc_query: prints email addresses
+    ;; Remove first line as it is only informative
+    (goto-char (point-min))
+    (delete-region (point-min) (line-end-position))))
+
 (defun pycarddavel--get-contacts-buffer ()
-  "Put all pycarddav contacts in the returned buffer."
-  (let ((buffer (get-buffer-create "*pycarddavel-contacts*")))
-    (with-current-buffer buffer
-      (erase-buffer)
-      (call-process
-       "pc_query"
-       nil ;; input file
-       (list buffer nil) ;; output to buffer, discard error
-       nil ;; don't redisplay
-       "-m") ;; 1st arg to pc_query: prints email addresses
-      (goto-char (point-min))
-      (delete-region (point-min) (line-end-position)))
+  "Return a buffer with one carddav contact per line."
+  (let ((buffer (get-buffer-create pycarddavel--buffer)))
+    (when (with-current-buffer (get-buffer-create pycarddavel--buffer)
+            (equal (point-min) (point-max)))
+      (pycarddavel--fill-buffer buffer))
     buffer))
+
+(defun pycarddavel--reset-buffer ()
+  "Make sure pycarddavel buffer is empty to force update on next use."
+  (with-current-buffer (get-buffer-create pycarddavel--buffer)
+    (erase-buffer)))
 
 (defun pycarddavel--get-contact-from-line (line)
   "Return a carddav contact read from LINE.
@@ -86,9 +101,13 @@ CANDIDATE is ignored."
    (requires-pattern :initform 0)))
 
 ;;;###autoload
-(defun pycarddavel-search-with-helm ()
-  "Start helm to select your contacts from a list."
-  (interactive)
+(defun pycarddavel-search-with-helm (refresh)
+  "Start helm to select your contacts from a list.
+If REFRESH is not-nil, make sure to ask pycarrdav to refresh the contacts
+list.  Otherwise, use the contacts previously fetched from pycarddav."
+  (interactive "P")
+  (when refresh
+    (pycarddavel--reset-buffer))
   (helm
    :prompt "contacts: "
    :sources (helm-make-source "Contacts" 'pycarddavel--helm-source)))
