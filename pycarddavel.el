@@ -77,6 +77,16 @@ The returned contact is of the form
   (when (string-match "\\(.*?\\)\t\\(.*?\\)\t" line)
     (list :name (match-string 2 line) :mail (match-string 1 line))))
 
+(defun pycarddavel-sync-from-server ()
+  "Use pycardsyncer to sync local database with server."
+  (interactive)
+  (call-process
+   "pycardsyncer"
+   nil
+   (get-buffer-create "*pycardsyncer*")
+   nil)
+  (message "pycardsyncer done"))
+
 (defun pycarddavel--helm-source-init ()
   "Initialize helm candidate buffer."
   (helm-candidate-buffer (pycarddavel--get-contacts-buffer)))
@@ -106,6 +116,8 @@ CANDIDATE is ignored."
 If REFRESH is not-nil, make sure to ask pycarrdav to refresh the contacts
 list.  Otherwise, use the contacts previously fetched from pycarddav."
   (interactive "P")
+  (when (and (consp refresh) (eq 16 (car refresh)))
+    (pycarddavel--sync-from-server))
   (when refresh
     (pycarddavel--reset-buffer))
   (helm
@@ -116,4 +128,4 @@ list.  Otherwise, use the contacts previously fetched from pycarddav."
 
 ;;; pycarddavel.el ends here
 
-;;  LocalWords:  pycarddav carddav
+;;  LocalWords:  pycarddav carddav pycardsyncer
