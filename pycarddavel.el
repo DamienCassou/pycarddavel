@@ -117,7 +117,7 @@ If REFRESH is not-nil, make sure to ask pycarrdav to refresh the contacts
 list.  Otherwise, use the contacts previously fetched from pycarddav."
   (interactive "P")
   (when (and (consp refresh) (eq 16 (car refresh)))
-    (pycarddavel--sync-from-server))
+    (pycarddavel-sync-from-server))
   (when refresh
     (pycarddavel--reset-buffer))
   (helm
